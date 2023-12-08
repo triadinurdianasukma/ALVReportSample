@@ -178,15 +178,15 @@ SELECT-OPTIONS : s_ordnum FOR zdemo_soh-salesorder,
                  s_bpnum FOR zdemo_soh-businesspartner.
 SELECTION-SCREEN END OF BLOCK se1.
 
-SELECTION-SCREEN BEGIN OF BLOCK se2 WITH FRAME TITLE TEXT-se2.
-PARAMETERS: p_layout TYPE if_salv_gui_layout_persistence=>y_layout_name.
-SELECTION-SCREEN END OF BLOCK se2.
+*SELECTION-SCREEN BEGIN OF BLOCK se2 WITH FRAME TITLE TEXT-se2.
+*PARAMETERS: p_layout TYPE if_salv_gui_layout_persistence=>y_layout_name.
+*SELECTION-SCREEN END OF BLOCK se2.
 
 *----------------------------------------------------------------------*
 * A T   S E L E C T I O N - S C R E E N
 *----------------------------------------------------------------------*
-AT SELECTION-SCREEN ON VALUE-REQUEST FOR p_layout.
-  p_layout = lcl_main=>select_layout( lcl_main=>gs_persistence_key ).
+*AT SELECTION-SCREEN ON VALUE-REQUEST FOR p_layout.
+*  p_layout = lcl_main=>select_layout( lcl_main=>gs_persistence_key ).
 
 *----------------------------------------------------------------------*
 INITIALIZATION.
@@ -201,7 +201,7 @@ START-OF-SELECTION.
   DATA(lo_report) = NEW lcl_main( ).
   lo_report->run( im_selection = VALUE lcl_main=>ty_selection( salesordernumber = s_ordnum[]
                                                                bpnumber         = s_bpnum[]
-                                                               layout           = p_layout )
+                                                               )
                                                              ).
 
 END-OF-SELECTION.
