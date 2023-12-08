@@ -7,42 +7,6 @@ REPORT zalvida_1.
 
 TABLES : zdemo_soh.
 
-CLASS lcx_general_msg DEFINITION
-  INHERITING FROM cx_static_check
-  CREATE PUBLIC .
-
-  PUBLIC SECTION.
-
-    INTERFACES if_t100_message .
-    INTERFACES if_t100_dyn_msg .
-
-    ALIASES msgty
-      FOR if_t100_dyn_msg~msgty .
-
-    METHODS constructor
-      IMPORTING
-        !textid   LIKE if_t100_message=>t100key OPTIONAL
-        !previous LIKE previous OPTIONAL
-        !msgty    TYPE symsgty OPTIONAL .
-  PROTECTED SECTION.
-  PRIVATE SECTION.
-ENDCLASS.
-
-CLASS lcx_general_msg IMPLEMENTATION.
-  METHOD constructor.
-    CALL METHOD super->constructor
-      EXPORTING
-        previous = previous.
-    me->msgty = msgty .
-    CLEAR me->textid.
-    IF textid IS INITIAL.
-      if_t100_message~t100key = if_t100_message=>default_textid.
-    ELSE.
-      if_t100_message~t100key = textid.
-    ENDIF.
-  ENDMETHOD.
-ENDCLASS.
-
 CLASS lcl_main DEFINITION CREATE PUBLIC FINAL.
 
   PUBLIC SECTION.
@@ -65,8 +29,7 @@ CLASS lcl_main DEFINITION CREATE PUBLIC FINAL.
 
     METHODS :
       run
-        IMPORTING im_selection TYPE ty_selection
-        RAISING   cx_static_check.
+        IMPORTING im_selection TYPE ty_selection.
   PROTECTED SECTION.
   PRIVATE SECTION.
 
@@ -122,8 +85,6 @@ CLASS lcl_main IMPLEMENTATION.
 *      CATCH cx_salv_db_connection.         " Error connecting to database
 *      CATCH cx_salv_ida_condition_invalid. " Superclass for all dynamic ALV IDA exceptions
 *      CATCH cx_salv_ida_unknown_name.      " Unknown name: FieldName,DataElementName,...
-      CATCH lcx_general_msg INTO DATA(lo_general_msg).
-        RAISE EXCEPTION lo_general_msg.
     ENDTRY.
 
   ENDMETHOD.
